@@ -55,7 +55,7 @@ public class Asociacion {
     }
     
     public void CargarDatos(){
-        File archivo = new File("Salida.txt");
+        File archivo = new File("./src/P2/Salida.txt");
         String cadena;
         
         int idMiembro;

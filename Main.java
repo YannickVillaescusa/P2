@@ -165,7 +165,7 @@ public class Main {
 
         Miembro dueño = asociacion.EncontrarMiembro(IDdueño); 
         
-        if(dueño.getImporteCompra() + costeCompra > 6000)
+        if(dueño.comprobarLimiteCosteCompra(costeCompra))
             System.out.println("Error: El miembro elegido supera el importe permitido;\n\tCancelando operacion...");
         else{
             moto = new Moto(modelo, cilindrada, costeCompra, matricula);
@@ -228,13 +228,16 @@ public class Main {
 
         Miembro cesionario = asociacion.EncontrarMiembro(idCesionario);   
 
-        cesion = new Cesion(motoImplicada, cedente, cesionario);
+        if(cesionario.comprobarLimiteCosteCompra(motoImplicada.getCosteCompra()))
+            System.out.println("Error: El miembro elegido supera el importe permitido;\n\tCancelando operacion...");
+        else{
+            cesion = new Cesion(motoImplicada, cedente, cesionario);
         
-        cesionario.addMoto(motoImplicada);
-        cedente.deleteMoto(motoImplicada);
-        asociacion.AñadirCesion(cesion);
-        System.out.println("\nCesion realizada correctamente");
-        
+            cesionario.addMoto(motoImplicada);
+            cedente.deleteMoto(motoImplicada);
+            asociacion.AñadirCesion(cesion);
+            System.out.println("\nCesion realizada correctamente");   
+        }
         PausarOutput();
     }
 
