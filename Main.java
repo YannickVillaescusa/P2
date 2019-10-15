@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practica1epii;
+package P2;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -69,6 +69,10 @@ public class Main {
                         MostrarMenu();
                         break;
                     case 7:
+                        IncrementarOtrosGastosMoto();
+                        MostrarMenu();
+                        break;
+                    case 8:
                         SalirPrograma();
                         break;
                     default:
@@ -83,13 +87,14 @@ public class Main {
     }
     
     private void MostrarMenu() {
-        System.out.println("1. Registrar un nuevo miembro ");
-        System.out.println("2. Registrar una nueva motocicleta  ");
-        System.out.println("3. Registrar una cesión  ");
-        System.out.println("4. Listar en pantalla los miembros con motos en posesión  ");
-        System.out.println("5. Listar todas las motos  ");
-        System.out.println("6. Mostrar las cesiones realizadas  ");
-        System.out.println("7. Salir del programa\n   ");
+        System.out.println("1. Registrar un nuevo miembro");
+        System.out.println("2. Registrar una nueva motocicleta");
+        System.out.println("3. Registrar una cesión");
+        System.out.println("4. Listar en pantalla los miembros con motos en posesión");
+        System.out.println("5. Listar todas las motos");
+        System.out.println("6. Mostrar las cesiones realizadas");
+        System.out.println("7. Incrementar otros gastos a una moto");
+        System.out.println("8. Salir del programa\n");
         
         System.out.println("Opcion: ");
     }
@@ -119,6 +124,8 @@ public class Main {
         boolean matriculaNoValida = false;
         boolean matriculaNoUnica = false;
         int cilindrada = 0;
+        int otrosGastos;
+
         
         System.out.println("\nIntroduce los datos de la motocicleta: ");
         Scanner scanner = new Scanner(System.in);
@@ -160,6 +167,14 @@ public class Main {
                 System.out.println("Error: Matricula perteneciente a otra motocicleta.\nIntroduzca la contraseña: ");
         } while (ComprobarCampoVacio(matricula) || matriculaNoValida == true || matriculaNoUnica == true);
         
+        System.out.println("\nOtros gastos correspondientes a la motocicleta: ");
+
+        do {
+            cadena = scanner.nextLine();
+        } while (ComprobarCampoVacio(cadena));
+        
+        otrosGastos = Integer.parseInt(cadena);
+        
         System.out.println("\nID del dueño de la motocicleta: ");
         MostrarMiembros();
         
@@ -174,7 +189,7 @@ public class Main {
         if(dueño.comprobarLimiteCosteCompra(costeCompra))
             System.out.println("Error: El miembro elegido supera el importe permitido;\n\tCancelando operacion...");
         else{
-            moto = new Moto(modelo, cilindrada, costeCompra, matricula);
+            moto = new Moto(modelo, cilindrada, costeCompra, matricula, otrosGastos);
         
             dueño.addMoto(moto);
 
@@ -216,7 +231,7 @@ public class Main {
         
         do {            
             matricula = scanner.nextLine();
-            motoImplicada = asociacion.EncontrarMoto(matricula);
+            motoImplicada = EncontrarMoto(matricula, cedente);
             if(motoImplicada == null)
                 System.out.println("Error: Matricula incorrecta, vuelve a introducir la matricula: ");
         } while (motoImplicada == null);     
@@ -290,6 +305,48 @@ public class Main {
         PausarOutput();
     }
 
+    private void IncrementarOtrosGastosMoto() {
+        int otrosGastos;
+        String cadena;
+        Moto moto;
+
+        System.out.println("\nID del dueño de la motocicleta: ");
+        MostrarMiembros();
+        
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            cadena = scanner.nextLine();
+        } while (ComprobarCampoVacio(cadena));
+        
+        int IDmiembro = Integer.parseInt(cadena);
+
+        Miembro miembro = asociacion.EncontrarMiembro(IDmiembro);
+        
+        System.out.println("\nMatricula de la moto implicada en la cesion: ");
+        MostrarMotos(miembro);
+        
+        do {            
+            cadena = scanner.nextLine();
+            moto = EncontrarMoto(cadena, miembro);
+            if(moto == null)
+                System.out.println("Error: Matricula incorrecta, vuelve a introducir la matricula: ");
+        } while (moto == null);
+        
+        System.out.println("\nIntroduce los gastos adicionales de la moto: ");
+        
+        do {
+            cadena = scanner.nextLine();
+        } while (ComprobarCampoVacio(cadena));
+        
+        otrosGastos = Integer.parseInt(cadena);
+        
+        moto.añadirOtrosGastos(otrosGastos);
+        
+        System.out.println("\nGastos añadidos correctamente");
+        PausarOutput(); 
+    }
+    
     private void SalirPrograma() {
         String nombre;
         File archivo;
@@ -326,17 +383,7 @@ public class Main {
             MostrarMiembro(miembro);
         }
     }
-    
-    //NO ES NECESARIA YA QUE VOLCAMOS MIEMBRO A MIEMBRO CON SUS RESPECTIVAS MOTOS
-    /*private void VolcarMiembros(BufferedWriter bw) {
-        Vector<Miembro> miembros = asociacion.getMiembros();
-        
-        for(int i = 0; i < miembros.size(); i++){
-            Miembro miembro = miembros.get(i);
-            VolcarMiembro(miembro, bw);
-        }
-    }*/
-    
+
     private void MostrarMiembro(Miembro miembro){
         System.out.println("ID miembro: " + miembro.getNumeroSocio() + "\tNombre: " + miembro.getNombre() +  "\tNumero de motos: " + miembro.getNumeroMotos() 
                             + "\tImporte de compra: " + miembro.getImporteCompra() + " €");
@@ -372,13 +419,24 @@ public class Main {
     
     private void MostrarMoto(Moto moto){
         System.out.println("Matricula: " + moto.getMatricula() + "\tModelo: " + moto.getModelo() + "\tCilindrada: " 
-                                + moto.getCilindrada() + "\tCoste de compra: " + moto.getCosteCompra() + " €");
+                                + moto.getCilindrada() + "\tCoste de compra: " + moto.getCosteCompra() + " €" + "\tOtrosGastos: " + moto.getOtrosGastos() + " €");
+    }
+    
+    private Moto EncontrarMoto(String matricula, Miembro miembro) {
+        Vector<Moto> motos = miembro.getMotos();
+        Moto moto = null;
+
+        for(int i = 0; i < motos.size(); i++){
+            if(matricula.equals(motos.get(i).getMatricula()))
+                moto = motos.get(i);
+        } 
+        return moto;
     }
     
     private void VolcarMoto(Moto moto, BufferedWriter bw){
         try {
             bw.write("Matricula: \"" + moto.getMatricula() + "\"\tModelo: \"" + moto.getModelo() + "\"\tCilindrada: \""
-                    + moto.getCilindrada() + "\"\tCoste de compra: \"" + moto.getCosteCompra() + "\" €");
+                    + moto.getCilindrada() + "\"\tCoste de compra: \"" + moto.getCosteCompra() + "\" €" + "\tOtrosGastos: \"" + moto.getOtrosGastos() + "\" €");
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -409,16 +467,13 @@ public class Main {
                     MostrarCesionDetalle(cesion); 
             
             } while (!"N".equals(cadena));
-        }
-        
+        } 
     }
 
     private void MostrarCesion(Cesion cesion) {
         System.out.println("ID Cesion:" + cesion.getIdCesion() + "\tFecha: " + cesion.getFecha() + "\tMiembro cedente: " + cesion.getCedente().getNombre() + "\tMiembro cesionario: " + cesion.getCesionario().getNombre()
                             + "\tMoto implicada: " + cesion.getMotoImplicada().getModelo());
     }
-    
-    
 
     private void MostrarCesionDetalle(Cesion cesion) {
         System.out.println("\nID Cesion:" + cesion.getIdCesion() +  " Fecha: " + cesion.getFecha());

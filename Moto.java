@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practica1epii;
+package P2;
 
 /**
  *
@@ -14,12 +14,14 @@ public class Moto {
     private int cilindrada;
     private int costeCompra;
     private String matricula;
+    private int otrosGastos;
 
-    public Moto(String modelo, int cilindrada, int costeCompra, String matricula) {
+    public Moto(String modelo, int cilindrada, int costeCompra, String matricula, int otrosGastos) {
         this.modelo = modelo;
         this.cilindrada = cilindrada;
         this.costeCompra = costeCompra;
         this.matricula = matricula;
+        this.otrosGastos = otrosGastos;
     }
 
     public String getModelo() {
@@ -36,6 +38,14 @@ public class Moto {
 
     public String getMatricula() {
         return matricula;
+    }
+
+    public int getOtrosGastos() {
+        return otrosGastos;
+    }
+
+    void añadirOtrosGastos(int otrosGastos) {
+        this.otrosGastos = this.otrosGastos + otrosGastos;
     }
     
     

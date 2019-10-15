@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practica1epii;
+package P2;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -69,7 +69,7 @@ public class Asociacion {
         String nombre;
         
         String matricula, modelo;
-        int cilindrada, importeMoto;
+        int cilindrada, importeMoto, otrosGastos;
         
         int idCesion;
         String fecha, matriculaCesion;
@@ -99,7 +99,8 @@ public class Asociacion {
                         modelo = tokens[3];
                         cilindrada = Integer.parseInt(tokens[5]);
                         importeMoto = Integer.parseInt(tokens[7]);
-                        moto = new Moto(modelo, cilindrada, importeMoto, matricula);
+                        otrosGastos = Integer.parseInt(tokens[9]);
+                        moto = new Moto(modelo, cilindrada, importeMoto, matricula, otrosGastos);
                         this.AñadirMoto(moto);
                         getMiembros().lastElement().addMoto(moto);
                 }else if(tokens[0].contains("ID Cesion")){
