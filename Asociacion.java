@@ -19,6 +19,9 @@ import java.util.logging.Logger;
  * @author Nunañi
  */
 public class Asociacion {
+    
+    static int MAXIMO_IMPORTE_COMPRA = 6000;
+    
     private Vector<Moto> motos;
     private Vector<Miembro> miembros;
     private Vector<Cesion> cesiones;
@@ -53,6 +56,10 @@ public class Asociacion {
     public Vector<Cesion> getCesiones() {
         return cesiones;
     }
+
+    public static void setLimiteMaximoImporteCompra(int MAXIMO_IMPORTE_COMPRA) {
+        Asociacion.MAXIMO_IMPORTE_COMPRA = MAXIMO_IMPORTE_COMPRA;
+    }
     
     public void CargarDatos(){
         File archivo = new File("./src/P2/Salida.txt");
@@ -76,13 +83,16 @@ public class Asociacion {
                 
                 String[] tokens = cadena.split("\"");
                 Miembro miembro = null;
-
+                
+                if(tokens[0].contains("Max Importe:")){
+                    Asociacion.MAXIMO_IMPORTE_COMPRA = Integer.parseInt(tokens[1]);
+                }
                 if(tokens[0].contains("ID miembro")){
                     idMiembro = Integer.parseInt(tokens[1]);
                     nombre = tokens[3];
                     miembro = new Miembro(idMiembro, nombre);
                     this.AñadirMiembro(miembro);
-                    miembro.ActualizarNumeroSocio(miembros.size());
+                    Miembro.NUMERO_SOCIO = miembros.size();
                 }else if(tokens[0].contains("Matricula")){
                         Moto moto;
                         matricula = tokens[1];
@@ -101,6 +111,7 @@ public class Asociacion {
                         matriculaCesion = tokens[9];
                         cesion = new Cesion(idCesion, fecha, EncontrarMiembro(idCedente), EncontrarMiembro(idCesionario), EncontrarMoto(matriculaCesion));
                         this.AñadirCesion(cesion);
+                        Cesion.NUMERO_CESION = cesiones.size();
                 }
             }
  

@@ -1,7 +1,14 @@
-ID miembro: "1"	Nombre: "Ivan"	Numero de motos: "1"	Importe de compra: "123" €
-Matricula: "1234www"	Modelo: "Vespa"	Cilindrada: "123"	Coste de compra: "123" €
-ID miembro: "2"	Nombre: "Jose"	Numero de motos: "1"	Importe de compra: "1234" €
+Max Importe: "8000"
+ID miembro: "1"	Nombre: "Ivan"	Numero de motos: "2"	Importe de compra: "8456" €
+Matricula: "1231ddd"	Modelo: "Buga"	Cilindrada: "123"	Coste de compra: "5000" €
+Matricula: "1234esw"	Modelo: "Ferra"	Cilindrada: "1231"	Coste de compra: "3456" €
+ID miembro: "2"	Nombre: "Jose"	Numero de motos: "2"	Importe de compra: "8234" €
 Matricula: "3456yyy"	Modelo: "Kawa"	Cilindrada: "123"	Coste de compra: "1234" €
-ID miembro: "3"	Nombre: "Paco"	Numero de motos: "1"	Importe de compra: "123" €
+Matricula: "1234hkj"	Modelo: "Coche"	Cilindrada: "180"	Coste de compra: "7000" €
+ID miembro: "3"	Nombre: "Paco"	Numero de motos: "2"	Importe de compra: "246" €
 Matricula: "1209dfd"	Modelo: "Loc"	Cilindrada: "123"	Coste de compra: "123" €
+Matricula: "1234www"	Modelo: "Vespa"	Cilindrada: "123"	Coste de compra: "123" €
 ID Cesion: "1"	Fecha: "14-10-2019"	Miembro cedente: "3"	Miembro cesionario: "2"	Moto implicada: "3456yyy"
+ID Cesion: "2"	Fecha: "15-10-2019"	Miembro cedente: "3"	Miembro cesionario: "1"	Moto implicada: "1231ddd"
+ID Cesion: "3"	Fecha: "15-10-2019"	Miembro cedente: "3"	Miembro cesionario: "1"	Moto implicada: "1234esw"
+ID Cesion: "4"	Fecha: "15-10-2019"	Miembro cedente: "1"	Miembro cesionario: "3"	Moto implicada: "1234www"

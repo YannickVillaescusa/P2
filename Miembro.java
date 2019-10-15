@@ -74,13 +74,9 @@ public class Miembro {
         numeroMotos = numeroMotos - 1;
         importeCompra = importeCompra - moto.getCosteCompra();    }
 
-    public void ActualizarNumeroSocio(int numeroSocios) {
-        NUMERO_SOCIO = numeroSocios;
-    }
-
     boolean comprobarLimiteCosteCompra(int costeCompra) {
         boolean sobrepasa = false;
-        if(this.importeCompra + costeCompra > 6000)
+        if(this.importeCompra + costeCompra > Asociacion.MAXIMO_IMPORTE_COMPRA)
             sobrepasa = true;
         
         return sobrepasa;

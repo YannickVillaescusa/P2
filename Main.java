@@ -26,7 +26,13 @@ public class Main {
         
         //CARGA DATOS CON FICHERO SALIDA.TXT
         asociacion.CargarDatos();
-        System.out.println("Asociación cultural de amigos de las motos antiguas ");
+        
+        System.out.println("Asociación cultural de amigos de las motos antiguas\n");
+        
+        System.out.println("Introduzca el importe maximo del importe de compra permitido: ");
+            Asociacion.MAXIMO_IMPORTE_COMPRA = Integer.parseInt(new Scanner(System.in).nextLine());
+        
+
         MostrarMenu();
         
         Scanner scanner = new Scanner(System.in);
@@ -294,7 +300,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         nombre = sc.nextLine();
         
-        archivo = new File(nombre + ".txt");
+        archivo = new File("./src/P2/" + nombre + ".txt");
         
         try {
             bw = new BufferedWriter(new FileWriter(archivo));
@@ -460,6 +466,11 @@ public class Main {
     private void EscibirFichero(BufferedWriter bw) {
         Vector<Miembro> miembros = asociacion.getMiembros();
 
+        try {
+            bw.write("Max Importe: \"" + Asociacion.MAXIMO_IMPORTE_COMPRA + "\"\n");
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i = 0; i < miembros.size(); i++){
             Miembro miembro = miembros.get(i);
             VolcarMiembro(miembro, bw);
@@ -475,7 +486,12 @@ public class Main {
 
         }        
         
-        VolcarCesiones(bw);  
+        VolcarCesiones(bw);
+        try {
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
 
