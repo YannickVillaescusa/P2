@@ -73,14 +73,18 @@ public class Main {
                         MostrarMenu();
                         break;
                     case 8:
+                        EliminarMiembro();
+                        MostrarMenu();
+                        break;
+                    case 9:
                         SalirPrograma();
                         break;
                     default:
                         System.out.println("Opcion incorrecta. Introduce la opcion: ");
-                        numero = 7;
+                        numero = 9;
                         break;
                 } 
-            } while (numero > 0 && numero <= 7);
+            } while (numero > 0 && numero <= 9);
         } catch (Exception e) {
             System.out.println("Error: No has introducido un numero");
         }  
@@ -94,7 +98,8 @@ public class Main {
         System.out.println("5. Listar todas las motos");
         System.out.println("6. Mostrar las cesiones realizadas");
         System.out.println("7. Incrementar otros gastos a una moto");
-        System.out.println("8. Salir del programa\n");
+        System.out.println("8. Eliminar un miembro de la asociacion");
+        System.out.println("9. Salir del programa\n");
         
         System.out.println("Opcion: ");
     }
@@ -224,8 +229,6 @@ public class Main {
             
         } while (cedente == null || cedente.getNumeroMotos() == 0);
 
-        
-        
         System.out.println("\nMatricula de la moto implicada en la cesion: ");
         MostrarMotos(cedente);
         
@@ -262,6 +265,39 @@ public class Main {
         PausarOutput();
     }
 
+    private boolean RegistrarCesion(Miembro cedente, Moto motoImplicada) {
+        Cesion cesion;
+        
+        int idCesionario;       
+        boolean cesionRealizada = false;
+       
+        Scanner scanner = new Scanner(System.in);  
+        
+        System.out.println("\nID del miembro al cual se le cede la moto: ");
+        MostrarMiembros();
+  
+        idCesionario = Integer.parseInt(scanner.nextLine());
+
+        Miembro cesionario = asociacion.EncontrarMiembro(idCesionario);   
+
+        if(cesionario.comprobarLimiteCosteCompra(motoImplicada.getCosteCompra())){
+            cesionRealizada = false;
+            System.out.println("Error: El miembro elegido supera el importe permitido;\n\tCancelando operacion...");
+        }
+        else{
+            cesion = new Cesion(motoImplicada, cedente, cesionario);
+        
+            cesionario.addMoto(motoImplicada);
+            cedente.deleteMoto(motoImplicada);
+            asociacion.AñadirCesion(cesion);
+            System.out.println("\nCesion realizada correctamente");   
+            cesionRealizada = true;
+        }
+        PausarOutput();
+        
+        return cesionRealizada;
+    }
+    
     private void ListarMiembrosMotosEnPosesion() {
         Vector<Miembro> miembros = asociacion.getMiembros();
         
@@ -347,6 +383,50 @@ public class Main {
         PausarOutput(); 
     }
     
+    private void EliminarMiembro() {
+        String cadena;
+        int identificador;
+        int numeroMotos;
+        boolean cesionRealizada = false;
+        
+        System.out.println("Introduce el identificador del miembro que deseas eliminar de la asociacion");
+        Scanner scanner = new Scanner(System.in);
+
+        MostrarMiembros();
+        System.out.println("\nID: ");
+        
+        do {
+            cadena = scanner.nextLine();
+        } while (ComprobarCampoVacio(cadena));
+        
+        identificador = Integer.parseInt(cadena);
+
+        Miembro miembro = asociacion.EncontrarMiembro(identificador);
+
+        if(miembro != null) {
+            asociacion.EliminarMiembro(miembro);
+        }
+        numeroMotos = miembro.getNumeroMotos();
+        if(numeroMotos > 0){
+            System.out.println("\nEl miembro eliminado tiene " + numeroMotos + " motos. Se deben ceder todas las motos.");
+            System.out.println( "ATENCION: Si la cesion no puede realizarse la moto será eliminada de la asociacion\n");
+            
+            for(int i = 0; i < numeroMotos; i++){              
+                Moto moto = miembro.getMotos().get(0);
+                
+                MostrarMoto(moto);
+                
+                cesionRealizada = RegistrarCesion(miembro, moto);
+                
+                if(!cesionRealizada)
+                    asociacion.EliminarMoto(moto);
+            }
+        }
+        
+        System.out.println("Se han realizado todas las cesiones");
+        PausarOutput();
+    }
+ 
     private void SalirPrograma() {
         String nombre;
         File archivo;

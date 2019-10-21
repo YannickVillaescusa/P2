@@ -5,10 +5,8 @@
  */
 package P2;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -131,6 +129,10 @@ public class Asociacion {
         } 
         return dueño;
     }
+    
+    public void EliminarMiembro(Miembro miembro) {
+        miembros.remove(miembro);
+    }
 
     public Moto EncontrarMoto(String matricula) {
         Vector<Moto> motos = this.getMotos();
@@ -143,6 +145,10 @@ public class Asociacion {
         return moto;
     }
     
+    void EliminarMoto(Moto moto) {
+        motos.remove(moto);
+    }
+    
     public Cesion EncontrarCesion(int idCesion){
         Vector<Cesion> cesiones = this.getCesiones();
         Cesion cesion = null;
@@ -152,6 +158,8 @@ public class Asociacion {
         } 
         return cesion;
     }
+
+    
     
     
 }

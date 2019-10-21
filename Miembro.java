@@ -72,7 +72,8 @@ public class Miembro {
     public void deleteMoto(Moto moto) {
         motos.remove(moto);
         numeroMotos = numeroMotos - 1;
-        importeCompra = importeCompra - moto.getCosteCompra();    }
+        importeCompra = importeCompra - moto.getCosteCompra();
+    }
 
     boolean comprobarLimiteCosteCompra(int costeCompra) {
         boolean sobrepasa = false;
