@@ -7,7 +7,7 @@ package P2;
 
 /**
  *
- * @author Nunañi
+ * @author Yannick Villaescusa
  */
 public class Practica1EPII {
 
@@ -16,6 +16,5 @@ public class Practica1EPII {
      */
     public static void main(String[] args) {
         new Main();
-    }
-    
+    } 
 }
